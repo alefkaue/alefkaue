@@ -1,5 +1,4 @@
 <!-- Banner de Welcome -->
-<img width="100%" src="https://i.imgur.com/Q2tn0ek.png" alt="Welcome Banner"/>
 <br>
 
 
