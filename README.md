@@ -1,18 +1,9 @@
-<!-- Banner de Welcome -->
-<img width="100%" src="https://i.pinimg.com/originals/93/43/ab/9343ab8af0452d15b4285d6a3e7b10a5.gif"/>
-
-<br>
-
-
-<br>
-
-<!-- Seu código original continua aqui -->
+<!-- Cabeçalho com título -->
 <div align="center">
-  <b>`Bem-vindo ao Meu Cantinho Pessoal`</b>
+  <h1>Bem-vindo ao Meu Cantinho Pessoal</h1>
   <samp>
-      <br>
-      Hi! I'm <b>Alef Kaue</b>, here’s a more personal side of me.  
-      A mix of coding, games, and randomness!
+    Hi! I'm <b>Alef Kaue</b>, aqui é um espaço mais pessoal meu.  
+    Um mix de <b>código</b>, <b>games</b> e <b>criatividade</b>!
   </samp>
 </div>
 
@@ -20,17 +11,20 @@
   <img src="https://readme-typing-svg.demolab.com?font=Iosevka&color=FFD700&width=900&size=24&center=true&lines=Personal+Profile;Coding+and+Chill;Gaming+Vibes;Red+Dead+Inspired+Style" alt="Typing SVG"/>
 </div>
 
-<!-- restante do código original continua igual -->
+<br>
 
+---
 
-
+<!-- Badge com nome -->
 <div align="center">
   <img src="https://img.shields.io/badge/Alef_Kaue-🔥-8B0000" />
 </div>
 
-<br><br>
+<br>
 
-<!-- Tabela com duas colunas: Cards de estatísticas e Imagem -->
+---
+
+<!-- Estatísticas -->
 <table align="center">
   <tr>
     <td width="60%" align="center">
@@ -40,14 +34,16 @@
       <img src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=alefkaue&theme=2077" width="49%"/>
     </td>
     <td width="40%" align="center">
-      <br><br>
       <img src="https://i.imgur.com/dtRl24g.gif" width="90%" />
     </td>
   </tr>
 </table>
 
-<br><br>
+<br>
 
+---
+
+<!-- Tecnologias -->
 <div align="center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
   <img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" />
   <img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" />
@@ -58,8 +54,11 @@
   <img width="40" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" />
 </div>
 
-<br><br>
+<br>
 
+---
+
+<!-- Mais sobre mim -->
 <details align="center">  
   <summary>
       <samp>
@@ -71,12 +70,9 @@
 
 <div align="center">
   <samp>
-    <b>
-      Contatos & Redes:
-    </b>
+    <b>Contatos & Redes:</b>
   </samp>
-  <br>
-  <br>
+  <br><br>
 
   [![Gmail](https://img.shields.io/badge/Gmail-8B0000?style=for-the-badge&logo=gmail&logoColor=FFD700)](mailto:alefkauesantosnunes@gmail.com)
   [![Instagram](https://img.shields.io/badge/Instagram-8B0000?style=for-the-badge&logo=instagram&logoColor=FFD700)](https://www.instagram.com/ak.sntos/)
@@ -88,10 +84,20 @@
 
 </details>
 
-<br>
+---
 
+<!-- Contador de visitas -->
 <div align="center">
   <p align="center"><img align="center" src="https://visit-counter.vercel.app/counter.png?page=https%3A%2F%2Fgithub.com%2Falefkaue&s=30&c=FFD700&bg=8B0000&no=2&ff=digi&tb=Visitas+no+Perfil%3A++&ta=" /></p> 
+</div>
+
+---
+
+<!-- GIF final: Descanso -->
+<div align="center">
+  <img width="100%" src="https://i.pinimg.com/originals/93/43/ab/9343ab8af0452d15b4285d6a3e7b10a5.gif"/>
+  <br><br>
+  <samp>🔥 Depois de ver tudo, descanse um pouco por aqui... 🔥</samp>
 </div>
 
 <br>
