@@ -1,5 +1,5 @@
 <!-- Banner de Welcome -->
-<img width="100%" src="https://i.pinimg.com/1200x/62/a7/73/62a773a1723bac2218af5900ddae79dc.jpg"/>
+<img width="100%" src="https://i.pinimg.com/originals/93/43/ab/9343ab8af0452d15b4285d6a3e7b10a5.gif"/>
 
 <br>
 
