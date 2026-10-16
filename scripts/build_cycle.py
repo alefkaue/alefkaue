@@ -190,11 +190,7 @@ def keyframes(i):
          f"{pct(bminus)}%{{opacity:1;clip-path:inset(0 0 0 0);}}"
          f"{pct(b)}%{{opacity:0;clip-path:inset(0 0 0 0);}}"
          f"100%{{opacity:0;}}}}")
-    # caption: opacity only
-    kc = (f"@keyframes c{i}{{"
-          f"0%{{opacity:0;}}{pct(a)}%{{opacity:0;}}{pct(a)}%{{opacity:1;}}"
-          f"{pct(bminus)}%{{opacity:1;}}{pct(b)}%{{opacity:0;}}100%{{opacity:0;}}}}")
-    return k + kc
+    return k
 
 
 art_top = TITLEBAR_H + PAD * 0.4
@@ -203,15 +199,9 @@ parts = [
     f'viewBox="0 0 {CANVAS_W} {CANVAS_H}" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">',
 ]
 
-# styles
-css = [f".slide{{opacity:0;}}"]
-for i in range(N):
-    css.append(f".s{i}{{animation:k{i} {T:.1f}s steps(1,end) infinite;}}")
-    css.append(f".cap{i}{{opacity:0;animation:c{i} {T:.1f}s steps(1,end) infinite;}}")
-# reveal needs smooth (not steps) for the clip wipe -> override timing for clip via separate anim?
-# Simplenicity: use linear for the whole thing so clip-path interpolates.
+# styles — clip-path drives hide/reveal (GitHub renders CSS @keyframes in <img>
+# SVGs; clip-path animation hides inactive layers reliably, opacity alone does not).
 css = [f".s{i}{{opacity:0;animation:k{i} {T:.1f}s linear infinite;}}" for i in range(N)]
-css += [f".cap{i}{{opacity:0;animation:c{i} {T:.1f}s linear infinite;}}" for i in range(N)]
 parts.append("<style>" + "".join(keyframes(i) for i in range(N)) + "".join(css) + "</style>")
 
 parts.append('<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">'
@@ -243,9 +233,9 @@ status_y = status_line_y + 19
 parts.append(f'<line x1="0" y1="{status_line_y:.1f}" x2="{CANVAS_W}" y2="{status_line_y:.1f}" stroke="{FRAME}"/>')
 prompt = f"{USERNAME.lower()}@github:~$ cat "
 parts.append(f'<text x="{PAD}" y="{status_y:.1f}" fill="{MUTED}" font-size="13">{prompt}</text>')
-cap_x = PAD + int(len(prompt) * 7.8)
+cap_x = PAD + int(len(prompt) * 8.0) + 8
 for i, (ch, name) in enumerate(ARTS):
-    parts.append(f'<text class="cap{i}" x="{cap_x}" y="{status_y:.1f}" fill="{INK}" font-size="13">{name}.art</text>')
+    parts.append(f'<text class="s{i}" x="{cap_x}" y="{status_y:.1f}" fill="{INK}" font-size="13">{name}.art</text>')
 
 parts.append("</svg>")
 svg = "".join(parts)
