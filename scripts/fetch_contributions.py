@@ -1,123 +1,167 @@
 #!/usr/bin/env python3
-"""
-Scrape real daily contribution counts from GitHub's public, unauthenticated
-contributions endpoint (the same fragment the profile page itself uses) and
-write data/contributions.json with the raw days plus derived stats
-(current streak, longest streak, best day, monthly totals).
+"""Fetch public GitHub contribution cells without a token or third-party service.
 
-No token, no auth, no GraphQL -- just the public HTML GitHub already serves.
-Run daily by .github/workflows/update-profile-art.yml.
+Fail on missing or unrecognised counts rather than silently treating them as zero.
+The old snapshot stays intact when the request or parsing fails.
 """
-import datetime
+from __future__ import annotations
+
+import datetime as dt
 import json
 import os
 import re
-import sys
+import time
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
-import requests
-from bs4 import BeautifulSoup
+ROOT = Path(__file__).resolve().parents[1]
+USERNAME = os.environ.get('GH_PROFILE_USER', 'valthvn')
+OUT_PATH = ROOT / 'data/contributions.json'
 
-USERNAME = os.environ.get("GH_PROFILE_USER", "AiyzoxX")
-URL = f"https://github.com/users/{USERNAME}/contributions"
-OUT_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "contributions.json")
+
+class CalendarParser(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.cells = []
+        self.tooltips = {}
+        self.tooltip_id = None
+        self.parts = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag in ('td', 'rect') and attrs.get('data-date'):
+            self.cells.append(attrs)
+        if tag == 'tool-tip':
+            self.tooltip_id = attrs.get('for')
+            self.parts = []
+
+    def handle_data(self, value):
+        if self.tooltip_id is not None:
+            self.parts.append(value)
+
+    def handle_endtag(self, tag):
+        if tag == 'tool-tip' and self.tooltip_id is not None:
+            self.tooltips[self.tooltip_id] = ' '.join(self.parts).strip()
+            self.tooltip_id = None
+            self.parts = []
+
+
+def parse_days(document, today=None):
+    today = today or dt.datetime.now(dt.timezone.utc).date()
+    parser = CalendarParser()
+    parser.feed(document)
+    days = {}
+    for cell in parser.cells:
+        date = dt.date.fromisoformat(cell['data-date'])
+        if date > today:
+            continue
+        if date in days:
+            raise ValueError(f'Duplicate calendar cell for {date}')
+        tooltip = parser.tooltips.get(cell.get('id')) or cell.get('aria-label', '')
+        if cell.get('data-count') is not None:
+            count = int(cell['data-count'])
+        elif re.match(r'^\s*no contributions\b', tooltip, re.I):
+            count = 0
+        else:
+            match = re.match(r'^\s*([\d,]+)\s+contributions?\b', tooltip, re.I)
+            if not match:
+                raise ValueError(f'Missing or unrecognised contribution count for {date}')
+            count = int(match[1].replace(',', ''))
+        if count < 0:
+            raise ValueError(f'Negative contribution count for {date}')
+        days[date] = count
+    if len(days) < 365:
+        raise ValueError(f'Incomplete GitHub calendar ({len(days)} observed days; need 365)')
+    end = max(days)
+    if end < today - dt.timedelta(days=1):
+        raise ValueError(f'Stale GitHub calendar: last observed day is {end}')
+    start = end - dt.timedelta(days=364)
+    observed = []
+    for i in range(365):
+        date = start + dt.timedelta(days=i)
+        if date not in days:
+            raise ValueError(f'Missing calendar date: {date}')
+        observed.append({'date': date.isoformat(), 'count': days[date]})
+    return observed
 
 
 def fetch_days():
-    resp = requests.get(URL, headers={"User-Agent": "profile-readme-bot/1.0"}, timeout=30)
-    resp.raise_for_status()
-    soup = BeautifulSoup(resp.text, "html.parser")
-
-    cells = soup.select("td.ContributionCalendar-day")
-    if not cells:
-        print("no calendar cells found -- github markup may have changed", file=sys.stderr)
-        sys.exit(1)
-
-    days = []
-    for td in cells:
-        date = td.get("data-date")
-        if not date:
-            continue
-        td_id = td.get("id")
-        tooltip_el = soup.find("tool-tip", attrs={"for": td_id}) if td_id else None
-        text = tooltip_el.get_text(strip=True) if tooltip_el else ""
-        if re.search(r"no contributions", text, re.I):
-            count = 0
-        else:
-            m = re.match(r"(\d+)", text)
-            count = int(m.group(1)) if m else 0
-        days.append({"date": date, "count": count})
-
-    days.sort(key=lambda d: d["date"])
-    return days
+    url = f'https://github.com/users/{USERNAME}/contributions'
+    request = Request(url, headers={'User-Agent': 'valthvn-profile-observatory/1.0', 'Accept-Language': 'en-US,en;q=0.9'})
+    for attempt in range(3):
+        try:
+            with urlopen(request, timeout=30) as response:
+                document = response.read().decode('utf-8')
+            return parse_days(document)
+        except (HTTPError, URLError, TimeoutError):
+            if attempt == 2:
+                raise
+            time.sleep(attempt + 1)
+    raise RuntimeError('Contribution fetch failed')
 
 
 def compute_current_streak(days):
-    idx = len(days) - 1
-    if days[idx]["count"] == 0:
-        idx -= 1  # today isn't over yet -- don't break the streak on it
-    streak = 0
-    end_idx = idx
-    while idx >= 0 and days[idx]["count"] > 0:
-        streak += 1
-        idx -= 1
-    start_idx = idx + 1
-    if streak == 0:
+    if not days:
         return 0, None, None
-    return streak, days[start_idx]["date"], days[end_idx]["date"]
+    idx = len(days) - 1
+    today = dt.datetime.now(dt.timezone.utc).date().isoformat()
+    if days[idx]['date'] == today and days[idx]['count'] == 0:
+        idx -= 1
+    end_idx = idx
+    while idx >= 0 and days[idx]['count'] > 0:
+        idx -= 1
+    length = end_idx - idx
+    return (length, days[idx+1]['date'], days[end_idx]['date']) if length else (0, None, None)
 
 
 def compute_longest_streak(days):
     longest = run = 0
-    longest_start = longest_end = None
-    run_start_idx = None
-    for i, d in enumerate(days):
-        if d["count"] > 0:
-            if run == 0:
-                run_start_idx = i
+    start = longest_start = longest_end = None
+    for row in days:
+        if row['count']:
+            if not run:
+                start = row['date']
             run += 1
             if run > longest:
-                longest = run
-                longest_start = days[run_start_idx]["date"]
-                longest_end = days[i]["date"]
+                longest, longest_start, longest_end = run, start, row['date']
         else:
             run = 0
     return longest, longest_start, longest_end
 
 
 def build_data(days):
-    total = sum(d["count"] for d in days)
-    active_days = sum(1 for d in days if d["count"] > 0)
-    best = max(days, key=lambda d: d["count"])
+    if not days:
+        raise ValueError('Empty contribution calendar')
+    total = sum(d['count'] for d in days)
+    active = sum(d['count'] > 0 for d in days)
+    best = max(days, key=lambda row: row['count'])
     cur_len, cur_start, cur_end = compute_current_streak(days)
     long_len, long_start, long_end = compute_longest_streak(days)
-
     monthly = {}
-    for d in days:
-        key = d["date"][:7]
-        monthly[key] = monthly.get(key, 0) + d["count"]
-    monthly_list = [{"month": k, "total": v} for k, v in sorted(monthly.items())]
-
+    for row in days:
+        month = row['date'][:7]
+        monthly[month] = monthly.get(month, 0) + row['count']
     return {
-        "username": USERNAME,
-        "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "range": {"start": days[0]["date"], "end": days[-1]["date"]},
-        "total_contributions": total,
-        "active_days": active_days,
-        "avg_per_active_day": round(total / active_days, 1) if active_days else 0,
-        "current_streak": {"length": cur_len, "start": cur_start, "end": cur_end},
-        "longest_streak": {"length": long_len, "start": long_start, "end": long_end},
-        "best_day": {"date": best["date"], "count": best["count"]},
-        "monthly": monthly_list,
-        "days": days,
+        'username': USERNAME,
+        'generated_at': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'range': {'start': days[0]['date'], 'end': days[-1]['date']},
+        'total_contributions': total,
+        'active_days': active,
+        'avg_per_active_day': round(total/active, 1) if active else 0,
+        'current_streak': {'length': cur_len, 'start': cur_start, 'end': cur_end},
+        'longest_streak': {'length': long_len, 'start': long_start, 'end': long_end},
+        'best_day': {'date': best['date'], 'count': best['count']},
+        'monthly': [{'month': k, 'total': v} for k, v in sorted(monthly.items())],
+        'days': days,
     }
 
 
-if __name__ == "__main__":
-    days = fetch_days()
-    data = build_data(days)
-    os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
-    with open(OUT_PATH, "w") as f:
-        json.dump(data, f, indent=2)
-    print(f"wrote {OUT_PATH}: {data['total_contributions']} contributions, "
-          f"current streak {data['current_streak']['length']}, "
-          f"longest streak {data['longest_streak']['length']}")
+if __name__ == '__main__':
+    data = build_data(fetch_days())
+    OUT_PATH.parent.mkdir(exist_ok=True)
+    temporary = OUT_PATH.with_suffix('.json.tmp')
+    temporary.write_text(json.dumps(data, indent=2)+'\n', encoding='utf-8')
+    temporary.replace(OUT_PATH)
+    print(f'Fetched {len(data["days"])} days / {data["total_contributions"]} contributions.')

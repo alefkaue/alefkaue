@@ -1,42 +1,49 @@
-name: Update profile art
+name: Update terminal session
 
-# Refreshes the contribution heatmap SVG daily from real public data.
-# Runs on a schedule, on push to main, and on demand.
+# Refreshes the contribution candles daily from the public calendar.
+# Standard library only — no tokens, no third-party services.
 
 "on":
   schedule:
-    - cron: "17 6 * * *"   # ~06:17 UTC daily
+    - cron: '17 6 * * *'
   workflow_dispatch: {}
   push:
     branches: [main]
+    paths:
+      - 'scripts/render_session.py'
+      - 'scripts/fetch_contributions.py'
+      - '.github/workflows/update-profile-art.yml'
 
 permissions:
   contents: write
+
+concurrency:
+  group: profile-session
+  cancel-in-progress: false
 
 env:
   GH_PROFILE_USER: alefkaue
 
 jobs:
-  heatmap:
+  session:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: pip install -r scripts/requirements.txt
-
-      - name: Scrape real contribution data (no auth needed)
+          python-version: '3.11'
+      - name: Fetch public contribution calendar
         run: python scripts/fetch_contributions.py
-
-      - name: Render animated contribution graph SVG
-        run: python scripts/render_heatmap_svg.py
-
-      - name: Commit updated art
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: refresh contribution graph [skip ci]"
-          file_pattern: "data/contributions.json contrib-heatmap.svg"
+      - name: Render current session
+        run: python scripts/render_session.py
+      - name: Commit refreshed activity
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/contributions.json assets/session README.md
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m 'chore: refresh terminal session activity [skip ci]'
+          git push
