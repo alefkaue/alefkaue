@@ -1,9 +1,9 @@
 <div align="center">
 
-<!-- Animated ASCII gallery — 10 colored artworks cycling on a loop -->
-<h3><code>alefkaue@github ~ $ ./ascii-gallery.sh</code></h3>
+<!-- Animated colored-ASCII Space Invader (reveal + cyber scanline) -->
+<h3><code>alefkaue@github ~ $ ./invader.sh</code></h3>
 
-<img src="./ascii-cycle.svg" width="760" alt="Galeria ASCII colorida animada — 10 artes alternando em loop (lobo, cavalo, leão, tigre, dragão, águia, caveira, robô, alien, tubarão)" />
+<img src="./ascii-invader.svg" width="760" alt="Space Invader em ASCII colorido animado com scanline cyber" />
 
 <br>
 <br>
