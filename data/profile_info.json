@@ -1,0 +1,17 @@
+{
+  "username": "alefkaue",
+  "rows": [
+    ["host"],
+    ["kv", "Role", "Estudante de TI"],
+    ["kv", "Foco", "Segurança da Informação & Dev"],
+    ["gap"],
+    ["sec", "Stack"],
+    ["kv", "Linguagens", "Python, Bash, SQL"],
+    ["kv", "Segurança", "Linux, Redes, SIEM"],
+    ["kv", "Ferramentas", "Git, Docker, VS Code"],
+    ["gap"],
+    ["sec", "Agora"],
+    ["bul", "Buscando estágio em TI / Cyber"],
+    ["bul", "Estudando segurança ofensiva e defensiva"]
+  ]
+}
