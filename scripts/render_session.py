@@ -98,6 +98,61 @@ def shell(body, height, title, desc, animated=True):
     return svg(960, height, title, desc, (STYLE if animated else '') + body)
 
 
+# The ASCII portrait grid is pre-rendered by scripts/make_ghost.py (Pillow) into
+# data/ghost.json; here it is only placed and animated — so the daily CI render
+# needs no image and no Pillow. It sits on the right of the hero, rises out of
+# the dark, and its eyes ignite (glow on the auto-detected catchlights).
+GHOST = ROOT / 'data/ghost.json'
+GHOST_STYLE = ('<style>'
+    '@keyframes gface{0%{opacity:0;clip-path:inset(0 0 100% 0)}'
+    '100%{opacity:.92;clip-path:inset(0 0 0 0)}}'
+    '@keyframes ggaze{0%{opacity:0}35%{opacity:0}55%{opacity:1}78%{opacity:.5}100%{opacity:1}}'
+    '.gface{opacity:.92;animation:gface 2s ease-out 1.8s both}'
+    '.geyes{opacity:0;animation:ggaze 6s ease-in-out 2.6s infinite}'
+    '@media(prefers-reduced-motion:reduce){.gface{animation:none;opacity:.92;clip-path:none}'
+    '.geyes{animation:none;opacity:1}}</style>')
+GHOST_DEFS = ('<defs>'
+    '<filter id="gg" x="-40%" y="-40%" width="180%" height="180%">'
+    '<feGaussianBlur stdDeviation="0.8"/></filter>'
+    '<filter id="gg2" x="-300%" y="-300%" width="700%" height="700%">'
+    '<feGaussianBlur stdDeviation="1.7"/></filter></defs>')
+
+
+def ghost_portrait():
+    if not GHOST.exists():
+        return ''
+    g = json.loads(GHOST.read_text(encoding='utf-8'))
+    lines, cols = g['lines'], g['cols']
+    rows = len(lines)
+    width = 345.0
+    adv = width / cols
+    fs = adv / 0.55
+    lh = adv * 2.0
+    x0 = 928 - cols * adv
+    y0 = 445 - rows * lh / 2
+    mono = 'font-family="monospace"'
+
+    def block(sub, sx, sy, fill, ncols):
+        tl = ncols * adv
+        out = []
+        for i, row in enumerate(sub):
+            out.append(f'<text x="{sx:.1f}" y="{sy + i * lh:.2f}" {mono} font-size="{fs:.2f}" '
+                       f'fill="{fill}" textLength="{tl:.1f}" lengthAdjust="spacing" '
+                       f'xml:space="preserve">{html.escape(row)}</text>')
+        return ''.join(out)
+
+    face = f'<g class="gface">{block(lines, x0, y0, "#f0f0f0", cols)}</g>'
+    halo = ''
+    for c0, c1, r0, r1 in g['eyes']:
+        sub = [row[c0:c1] for row in lines[r0:r1]]
+        halo += block(sub, x0 + c0 * adv, y0 + r0 * lh, '#ffffff', c1 - c0)
+    halo = f'<g class="geyes" filter="url(#gg)">{halo}</g>'
+    orbs = ''.join(f'<circle cx="{x0 + pc * adv:.1f}" cy="{y0 + pr * lh - fs * 0.35:.1f}" '
+                   f'r="{adv * 1.8:.1f}" fill="#ffffff"/>' for pc, pr in g['pupils'])
+    orbs = f'<g class="geyes" filter="url(#gg2)">{orbs}</g>'
+    return GHOST_DEFS + GHOST_STYLE + face + halo + orbs
+
+
 def hero():
     b = T(32, 35, '●  PUBLIC SESSION', 11) + T(733, 35, 'TTY / 001   UTF-8', 11)
     b += R(32, 53, 896, 1, '#393939')
@@ -111,6 +166,7 @@ def hero():
     b += reveal(T(34, 525, '~ $ ./explore', 16), 4.6, 'type')
     b += reveal(T(34, 556, 'projects/      stack.json      activity.log', 13, fill='#b8b8b8'), 5.4)
     b += reveal(T(34, 596, '~ $', 16) + '<rect class="cursor" x="77" y="582" width="10" height="18" fill="#f0f0f0"/>', 5.8)
+    b += ghost_portrait()
     b += R(32, 622, 896, 1, '#393939') + T(34, 650, 'END OF BOOT / YOUR NEXT COMMAND IS BELOW ↓', 11, fill='#969696')
     return shell(b, 676, f'{WORDMARK} — a living terminal session',
                  f'Animated connection and whoami sequence. {WHOAMI[0][1]} — {WHOAMI[1][1]}; '
@@ -198,11 +254,8 @@ def readme():
     stack_json = json.dumps(STACK, indent=2, ensure_ascii=False)
     return ('<!-- ' + WORDMARK + ' / SESSION 001 -->\n\n'
             + picture('boot', f'{WORDMARK}. Animated monochrome terminal session. {WHOAMI[0][1]} — '
-                      f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend.') + '\n\n'
-            # ghost.svg is a static, pre-rendered ASCII portrait (scripts/make_ghost.py);
-            # it is not regenerated here, only referenced so this README keeps it.
-            + picture('ghost', 'Animated ASCII portrait that emerges from the dark; its eyes '
-                      'ignite and watch over the session.') + '\n\n'
+                      f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend. An ASCII portrait '
+                      'rises on the right and its eyes ignite.') + '\n\n'
             + links + '\n\n'
             '<details>\n<summary><code>~ $ cat stack.json</code></summary>\n\n'
             '```json\n' + stack_json + '\n```\n\n'
@@ -225,9 +278,9 @@ def main():
     for name, body in assets.items():
         (OUT / f'{name}.svg').write_text(body, encoding='utf-8')
         light = body
-        for dark, lite in {'#f0f0f0': '#1f2328', '#eeeeee': '#1f2328', '#b8b8b8': '#59636e',
-                           '#969696': '#59636e', '#393939': '#d1d9e0', '#252525': '#d8dee4',
-                           '#0b0b0b': '#ffffff'}.items():
+        for dark, lite in {'#f0f0f0': '#1f2328', '#eeeeee': '#1f2328', '#ffffff': '#1f2328',
+                           '#b8b8b8': '#59636e', '#969696': '#59636e', '#393939': '#d1d9e0',
+                           '#252525': '#d8dee4', '#0b0b0b': '#ffffff'}.items():
             light = light.replace(dark, lite)
         (OUT / f'{name}-light.svg').write_text(light, encoding='utf-8')
     (ROOT / 'README.md').write_text(readme(), encoding='utf-8')
