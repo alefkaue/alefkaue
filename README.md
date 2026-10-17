@@ -2,13 +2,13 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/boot.svg"><img src="./assets/session/boot-light.svg" width="960" alt="ALEFKAUE. Animated monochrome terminal session. Alef Santos / alefkaue — Cybersecurity Student; Blue Team · SOC · Pentest. Learn. Break. Defend. An ASCII portrait rises on the right and its eyes ignite."></picture>
 
-**Projetos em destaque · detecção, integridade e Cloud Security**
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/projects-head.svg"><img src="./assets/session/projects-head-light.svg" width="960" alt="Featured security projects: detection, integrity and cloud security."></picture>
 
 <a href="https://github.com/alefkaue/ssh-watch"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-01.svg"><img src="./assets/session/project-01-light.svg" width="960" alt="Open SSH Watch / SOC detection repository"></picture></a><br>
 <a href="https://github.com/alefkaue/integrity-guard"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-02.svg"><img src="./assets/session/project-02-light.svg" width="960" alt="Open Integrity Guard / file monitoring repository"></picture></a><br>
 <a href="https://github.com/alefkaue/iam-policy-lens"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-03.svg"><img src="./assets/session/project-03-light.svg" width="960" alt="Open IAM Policy Lens / cloud review repository"></picture></a><br>
 
-[Ver catálogo de cibersegurança e demonstrações](./PORTFOLIO.md)
+<a href="./PORTFOLIO.md"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/projects-more.svg"><img src="./assets/session/projects-more-light.svg" width="960" alt="Open the full cybersecurity portfolio catalog and demos."></picture></a>
 
 <details>
 <summary><code>~ $ cat stack.json</code></summary>

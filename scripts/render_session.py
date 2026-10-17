@@ -182,11 +182,26 @@ def hero():
                  f'{WHOAMI[2][1]}. Project links and an expandable stack follow.')
 
 
+def projects_header():
+    b = T(32, 39, '~ $ ls ~/projects', 17)
+    b += T(32, 70, '# FEATURED · DETECTION / INTEGRITY / CLOUD SECURITY', 11, fill='#969696')
+    b += R(32, 86, 896, 1, '#393939')
+    return shell(b, 100, 'Featured projects', 'Featured security projects: detection, integrity and cloud security.', False)
+
+
 def project(label, repo, number):
     b = T(26, 32, number, 12, fill='#969696') + T(74, 33, 'cd ~/projects/' + repo, 17)
     b += T(74, 62, PROJECT_SUMMARIES.get(repo, 'OPEN REPOSITORY'), 10, fill='#969696') + T(895, 48, '↗', 26)
     b += R(26, 81, 908, 1, '#393939')
     return shell(b, 90, 'Open ' + label, 'Shell-style link to the ' + label + ' repository.', False)
+
+
+def project_more():
+    b = T(30, 33, '→', 16, fill='#969696') + T(74, 33, 'open portfolio.md', 17)
+    b += T(74, 62, 'FULL CYBERSECURITY CATALOG & DEMOS', 10, fill='#969696') + T(895, 48, '↗', 26)
+    b += R(26, 81, 908, 1, '#393939')
+    return shell(b, 90, 'Open portfolio catalog',
+                 'Shell-style link to the full cybersecurity portfolio catalog and demos.', False)
 
 
 def candles(days):
@@ -288,9 +303,11 @@ def readme():
             + picture('boot', f'{WORDMARK}. Animated monochrome terminal session. {WHOAMI[0][1]} — '
                       f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend. An ASCII portrait '
                       'rises on the right and its eyes ignite.') + '\n\n'
-            + '**Projetos em destaque · detecção, integridade e Cloud Security**\n\n'
+            + picture('projects-head', 'Featured security projects: detection, integrity and cloud security.') + '\n\n'
             + links + '\n\n'
-            '[Ver catálogo de cibersegurança e demonstrações](./PORTFOLIO.md)\n\n'
+            + '<a href="./PORTFOLIO.md">'
+            + picture('projects-more', 'Open the full cybersecurity portfolio catalog and demos.')
+            + '</a>\n\n'
             '<details>\n<summary><code>~ $ cat stack.json</code></summary>\n\n'
             '```json\n' + stack_json + '\n```\n\n'
             '</details>\n\n<br>\n\n'
@@ -310,7 +327,8 @@ def readme():
 def main():
     data = json.loads((ROOT / 'data/contributions.json').read_text(encoding='utf-8'))
     OUT.mkdir(parents=True, exist_ok=True)
-    assets = {'boot': hero(), 'activity': activity(data)}
+    assets = {'boot': hero(), 'activity': activity(data),
+              'projects-head': projects_header(), 'projects-more': project_more()}
     if (ROOT / 'data/languages.json').exists():
         assets['languages'] = languages()
     assets.update((f'project-{p[2]}', project(*p)) for p in PROJECTS)
