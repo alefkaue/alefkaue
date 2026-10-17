@@ -19,9 +19,15 @@ OUT = ROOT / 'assets/session'
 USER = os.environ.get('GH_PROFILE_USER', 'alefkaue')
 
 # (display label, repository name, number)
-PROJECTS = [('mini-soc-analyzer', 'mini-soc-analyzer', '01'),
-            ('pentest-ponto-cego', 'pentest-ponto-cego', '02'),
-            ('estagios', 'estagios', '03')]
+PROJECTS = [('SSH Watch / SOC detection', 'ssh-watch', '01'),
+            ('Integrity Guard / file monitoring', 'integrity-guard', '02'),
+            ('IAM Policy Lens / cloud review', 'iam-policy-lens', '03')]
+
+PROJECT_SUMMARIES = {
+    'ssh-watch': 'SOC / SSH failure bursts and login correlation / tested CLI',
+    'integrity-guard': 'BLUE TEAM / SHA-256 baselines and file change detection',
+    'iam-policy-lens': 'CLOUD SECURITY / offline IAM policy review and evidence',
+}
 
 WORDMARK = 'ALEFKAUE'
 TAGLINE = 'BREAK IT. UNDERSTAND IT. DEFEND IT.'
@@ -178,7 +184,7 @@ def hero():
 
 def project(label, repo, number):
     b = T(26, 32, number, 12, fill='#969696') + T(74, 33, 'cd ~/projects/' + repo, 17)
-    b += T(74, 62, 'OPEN REPOSITORY', 10, fill='#969696') + T(895, 48, '↗', 26)
+    b += T(74, 62, PROJECT_SUMMARIES.get(repo, 'OPEN REPOSITORY'), 10, fill='#969696') + T(895, 48, '↗', 26)
     b += R(26, 81, 908, 1, '#393939')
     return shell(b, 90, 'Open ' + label, 'Shell-style link to the ' + label + ' repository.', False)
 
@@ -282,7 +288,9 @@ def readme():
             + picture('boot', f'{WORDMARK}. Animated monochrome terminal session. {WHOAMI[0][1]} — '
                       f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend. An ASCII portrait '
                       'rises on the right and its eyes ignite.') + '\n\n'
+            + '**Projetos em destaque · detecção, integridade e Cloud Security**\n\n'
             + links + '\n\n'
+            '[Ver catálogo de cibersegurança e demonstrações](./PORTFOLIO.md)\n\n'
             '<details>\n<summary><code>~ $ cat stack.json</code></summary>\n\n'
             '```json\n' + stack_json + '\n```\n\n'
             '</details>\n\n<br>\n\n'

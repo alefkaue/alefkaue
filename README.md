@@ -2,9 +2,13 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/boot.svg"><img src="./assets/session/boot-light.svg" width="960" alt="ALEFKAUE. Animated monochrome terminal session. Alef Santos / alefkaue — Cybersecurity Student; Blue Team · SOC · Pentest. Learn. Break. Defend. An ASCII portrait rises on the right and its eyes ignite."></picture>
 
-<a href="https://github.com/alefkaue/mini-soc-analyzer"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-01.svg"><img src="./assets/session/project-01-light.svg" width="960" alt="Open mini-soc-analyzer repository"></picture></a><br>
-<a href="https://github.com/alefkaue/pentest-ponto-cego"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-02.svg"><img src="./assets/session/project-02-light.svg" width="960" alt="Open pentest-ponto-cego repository"></picture></a><br>
-<a href="https://github.com/alefkaue/estagios"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-03.svg"><img src="./assets/session/project-03-light.svg" width="960" alt="Open estagios repository"></picture></a><br>
+**Projetos em destaque · detecção, integridade e Cloud Security**
+
+<a href="https://github.com/alefkaue/ssh-watch"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-01.svg"><img src="./assets/session/project-01-light.svg" width="960" alt="Open SSH Watch / SOC detection repository"></picture></a><br>
+<a href="https://github.com/alefkaue/integrity-guard"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-02.svg"><img src="./assets/session/project-02-light.svg" width="960" alt="Open Integrity Guard / file monitoring repository"></picture></a><br>
+<a href="https://github.com/alefkaue/iam-policy-lens"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-03.svg"><img src="./assets/session/project-03-light.svg" width="960" alt="Open IAM Policy Lens / cloud review repository"></picture></a><br>
+
+[Ver catálogo de cibersegurança e demonstrações](./PORTFOLIO.md)
 
 <details>
 <summary><code>~ $ cat stack.json</code></summary>
