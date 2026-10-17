@@ -10,44 +10,7 @@
 
 <a href="./PORTFOLIO.md"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/projects-more.svg"><img src="./assets/session/projects-more-light.svg" width="960" alt="Open the full cybersecurity portfolio catalog and demos."></picture></a>
 
-<details>
-<summary><code>~ $ cat stack.json</code></summary>
-
-```json
-{
-  "security": [
-    "Linux",
-    "Networking",
-    "SIEM",
-    "Pentest",
-    "OSINT"
-  ],
-  "tooling": [
-    "Nmap",
-    "Wireshark",
-    "Burp Suite"
-  ],
-  "languages": [
-    "Python",
-    "Bash",
-    "SQL"
-  ],
-  "dev": [
-    "Git",
-    "Docker",
-    "REST APIs"
-  ],
-  "learning": [
-    "Blue Team",
-    "Red Team",
-    "Cloud Security"
-  ]
-}
-```
-
-</details>
-
-<br>
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/stack.svg"><img src="./assets/session/stack-light.svg" width="960" alt="Security toolkit and skills across security, tooling, languages, frameworks, dev and learning — the skills a byte-share bar cannot show."></picture>
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/languages.svg"><img src="./assets/session/languages-light.svg" width="960" alt="Monochrome bars of the top languages by byte share across public, non-fork repositories, refreshed daily."></picture>
 
@@ -57,7 +20,7 @@
 <summary><code>~ $ help</code></summary>
 
 `projects/` — click a repository row above.  
-`stack.json` — expand the toolbox.  
+`./stack` — security toolkit and skills.  
 `languages` — real byte share across public repos, refreshed daily.  
 `activity.log` — real public contribution candles, refreshed daily.
 

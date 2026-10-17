@@ -40,7 +40,8 @@ STACK = {
     "security": ["Linux", "Networking", "SIEM", "Pentest", "OSINT"],
     "tooling": ["Nmap", "Wireshark", "Burp Suite"],
     "languages": ["Python", "Bash", "SQL"],
-    "dev": ["Git", "Docker", "REST APIs"],
+    "frameworks": ["Flask", "REST APIs"],
+    "dev": ["Git", "Docker"],
     "learning": ["Blue Team", "Red Team", "Cloud Security"],
 }
 
@@ -289,6 +290,24 @@ def languages():
                  f'public, non-fork repositories: {summary}.')
 
 
+def stack_block():
+    """A visible, monochrome toolkit — skills the byte-share bar can't show."""
+    order = [('SECURITY', 'security'), ('TOOLING', 'tooling'), ('LANGUAGES', 'languages'),
+             ('FRAMEWORKS', 'frameworks'), ('DEV', 'dev'), ('LEARNING', 'learning')]
+    rows = [(name, STACK[key]) for name, key in order if STACK.get(key)]
+    b = T(32, 39, '~ $ ./stack --list', 17)
+    b += T(32, 70, '# TOOLKIT / SKILLS BEYOND THE BYTE COUNT', 11, fill='#969696')
+    b += R(32, 86, 896, 1, '#393939')
+    y0, rh = 126, 34
+    for i, (name, items) in enumerate(rows):
+        y = y0 + i * rh
+        line = T(32, y, f'[ {name} ]', 13) + T(214, y, ' · '.join(items), 13, fill='#b8b8b8')
+        b += reveal(line, 0.2 + i * 0.12, 'pop')
+    height = y0 + (len(rows) - 1) * rh + 28
+    return shell(b, height, 'Security toolkit and skills',
+                 'Toolkit and skills — ' + '; '.join(f'{n}: {", ".join(it)}' for n, it in rows) + '.')
+
+
 def picture(name, alt):
     return (f'<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/{name}.svg">'
             f'<img src="./assets/session/{name}-light.svg" width="960" alt="{escape(alt, quote=True)}"></picture>')
@@ -298,7 +317,6 @@ def readme():
     links = '\n'.join(f'<a href="https://github.com/{USER}/{repo}">'
                       + picture('project-' + number, 'Open ' + label + ' repository') + '</a><br>'
                       for label, repo, number in PROJECTS)
-    stack_json = json.dumps(STACK, indent=2, ensure_ascii=False)
     return ('<!-- ' + WORDMARK + ' / SESSION 001 -->\n\n'
             + picture('boot', f'{WORDMARK}. Animated monochrome terminal session. {WHOAMI[0][1]} — '
                       f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend. An ASCII portrait '
@@ -308,9 +326,8 @@ def readme():
             + '<a href="./PORTFOLIO.md">'
             + picture('projects-more', 'Open the full cybersecurity portfolio catalog and demos.')
             + '</a>\n\n'
-            '<details>\n<summary><code>~ $ cat stack.json</code></summary>\n\n'
-            '```json\n' + stack_json + '\n```\n\n'
-            '</details>\n\n<br>\n\n'
+            + picture('stack', 'Security toolkit and skills across security, tooling, languages, '
+                      'frameworks, dev and learning — the skills a byte-share bar cannot show.') + '\n\n'
             + picture('languages', 'Monochrome bars of the top languages by byte share across public, '
                       'non-fork repositories, refreshed daily.') + '\n\n'
             + picture('activity', 'Monochrome GitHub contribution candles: 90 daily candles based on rolling '
@@ -318,7 +335,7 @@ def readme():
                       'Filled candles rise; hollow candles fall.') + '\n\n'
             '<details>\n<summary><code>~ $ help</code></summary>\n\n'
             '`projects/` — click a repository row above.  \n'
-            '`stack.json` — expand the toolbox.  \n'
+            '`./stack` — security toolkit and skills.  \n'
             '`languages` — real byte share across public repos, refreshed daily.  \n'
             '`activity.log` — real public contribution candles, refreshed daily.\n\n'
             '</details>\n')
@@ -327,7 +344,7 @@ def readme():
 def main():
     data = json.loads((ROOT / 'data/contributions.json').read_text(encoding='utf-8'))
     OUT.mkdir(parents=True, exist_ok=True)
-    assets = {'boot': hero(), 'activity': activity(data),
+    assets = {'boot': hero(), 'activity': activity(data), 'stack': stack_block(),
               'projects-head': projects_header(), 'projects-more': project_more()}
     if (ROOT / 'data/languages.json').exists():
         assets['languages'] = languages()
