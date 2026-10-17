@@ -1,23 +1,23 @@
 {
   "username": "alefkaue",
-  "generated_at": "2026-10-17T03:05:28Z",
-  "repos_counted": 22,
-  "total_bytes": 4022708,
+  "generated_at": "2026-10-17T03:28:09Z",
+  "repos_counted": 25,
+  "total_bytes": 4045660,
   "languages": [
     {
       "name": "Python",
-      "bytes": 1897429,
-      "pct": 47.2
+      "bytes": 1920381,
+      "pct": 47.5
     },
     {
       "name": "TypeScript",
       "bytes": 1187259,
-      "pct": 29.5
+      "pct": 29.3
     },
     {
       "name": "JavaScript",
       "bytes": 487142,
-      "pct": 12.1
+      "pct": 12.0
     },
     {
       "name": "HTML",
@@ -27,7 +27,7 @@
     {
       "name": "CSS",
       "bytes": 163401,
-      "pct": 4.1
+      "pct": 4.0
     },
     {
       "name": "Bicep",
