@@ -16,6 +16,9 @@ Os três usam Python sem dependências externas, incluem exemplos sintéticos e 
 
 | Área | Projeto | Escopo |
 | --- | --- | --- |
+| Segurança de redes / inventário | [Nmap Surface Diff](https://github.com/alefkaue/nmap-surface-diff) | Comparação offline de XML do Nmap, endpoints observados e mudanças de escopo |
+| Segurança de redes / políticas | [Firewall Rule Lens](https://github.com/alefkaue/firewall-rule-lens) | Revisão de regras first-match em JSON, encobrimento e origens amplas |
+| Linux / hardening | [Linux Permission Audit](https://github.com/alefkaue/linux-permission-audit) | Revisão de permissões Unix com coletor opcional de metadados POSIX |
 | Threat Intelligence / triagem | [IOC Workbench](https://github.com/alefkaue/ioc-workbench) | Normalização, deduplicação e proveniência de indicadores, sem consultas externas |
 | AppSec | [Header Sentry](https://github.com/alefkaue/header-sentry) | Revisão offline de cabeçalhos HTTP com achados JSON |
 | SOC / fundamentos | [Mini SOC Analyzer](https://github.com/alefkaue/mini-soc-analyzer) | Análise introdutória de eventos de segurança em Python |
