@@ -1,6 +1,6 @@
 <!-- ALEFKAUE / SESSION 001 -->
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/boot.svg"><img src="./assets/session/boot-light.svg" width="960" alt="ALEFKAUE. Animated monochrome terminal session. Alef Santos / alefkaue — Estudante de TI; Segurança da Informação &amp; Dev. Learn. Break. Defend. An ASCII portrait rises on the right and its eyes ignite."></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/boot.svg"><img src="./assets/session/boot-light.svg" width="960" alt="ALEFKAUE. Animated monochrome terminal session. Alef Santos / alefkaue — Cybersecurity Student; Blue Team · SOC · Pentest. Learn. Break. Defend. An ASCII portrait rises on the right and its eyes ignite."></picture>
 
 <a href="https://github.com/alefkaue/mini-soc-analyzer"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-01.svg"><img src="./assets/session/project-01-light.svg" width="960" alt="Open mini-soc-analyzer repository"></picture></a><br>
 <a href="https://github.com/alefkaue/pentest-ponto-cego"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-02.svg"><img src="./assets/session/project-02-light.svg" width="960" alt="Open pentest-ponto-cego repository"></picture></a><br>
@@ -11,26 +11,32 @@
 
 ```json
 {
+  "security": [
+    "Linux",
+    "Networking",
+    "SIEM",
+    "Pentest",
+    "OSINT"
+  ],
+  "tooling": [
+    "Nmap",
+    "Wireshark",
+    "Burp Suite"
+  ],
   "languages": [
     "Python",
     "Bash",
     "SQL"
   ],
-  "security": [
-    "Linux",
-    "Redes",
-    "SIEM",
-    "Pentest"
-  ],
   "dev": [
     "Git",
     "Docker",
-    "APIs REST"
+    "REST APIs"
   ],
   "learning": [
     "Blue Team",
     "Red Team",
-    "Cloud"
+    "Cloud Security"
   ]
 }
 ```

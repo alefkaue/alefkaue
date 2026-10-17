@@ -24,17 +24,18 @@ PROJECTS = [('mini-soc-analyzer', 'mini-soc-analyzer', '01'),
             ('estagios', 'estagios', '03')]
 
 WORDMARK = 'ALEFKAUE'
-TAGLINE = 'LEARNING SECURITY, ONE COMMIT AT A TIME.'
+TAGLINE = 'BREAK IT. UNDERSTAND IT. DEFEND IT.'
 WHOAMI = [('user', 'Alef Santos / alefkaue'),
-          ('role', 'Estudante de TI'),
-          ('focus', 'Segurança da Informação & Dev'),
+          ('role', 'Cybersecurity Student'),
+          ('focus', 'Blue Team · SOC · Pentest'),
           ('mindset', 'Learn. Break. Defend.'),
           ('source', 'Open source. Always curious.')]
 STACK = {
+    "security": ["Linux", "Networking", "SIEM", "Pentest", "OSINT"],
+    "tooling": ["Nmap", "Wireshark", "Burp Suite"],
     "languages": ["Python", "Bash", "SQL"],
-    "security": ["Linux", "Redes", "SIEM", "Pentest"],
-    "dev": ["Git", "Docker", "APIs REST"],
-    "learning": ["Blue Team", "Red Team", "Cloud"],
+    "dev": ["Git", "Docker", "REST APIs"],
+    "learning": ["Blue Team", "Red Team", "Cloud Security"],
 }
 
 
