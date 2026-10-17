@@ -16,6 +16,8 @@ All three are pure Python with no external dependencies, include synthetic examp
 
 | Area | Project | Scope |
 | --- | --- | --- |
+| Java / artifact integrity | [Artifact Hash Guard](https://github.com/alefkaue/artifact-hash-guard) | Offline SHA-256 manifest verification, safe-path checks and file integrity reports |
+| C# / authentication triage | [Auth Event Lens](https://github.com/alefkaue/auth-event-lens) | Normalized authentication events, multi-account failure patterns and success correlation |
 | Network security / inventory | [Nmap Surface Diff](https://github.com/alefkaue/nmap-surface-diff) | Offline diff of Nmap XML — observed endpoints and scope changes |
 | Network security / policy | [Firewall Rule Lens](https://github.com/alefkaue/firewall-rule-lens) | First-match rule review in JSON — shadowing and overly broad sources |
 | Linux / hardening | [Linux Permission Audit](https://github.com/alefkaue/linux-permission-audit) | Unix permission review with an optional POSIX metadata collector |
