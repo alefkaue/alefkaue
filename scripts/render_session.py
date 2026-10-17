@@ -78,13 +78,15 @@ def normalize_days(data):
 T = partial(text, fill='#f0f0f0')
 R = partial(rect, stroke='none', sw=0)
 STYLE = '''<style>
-@keyframes type{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
-@keyframes enter{from{opacity:0}to{opacity:1}}
+@keyframes type{0%{clip-path:inset(0 100% 0 0)}6%{clip-path:inset(0 0 0 0)}90%{clip-path:inset(0 0 0 0)}94%{clip-path:inset(0 100% 0 0)}100%{clip-path:inset(0 100% 0 0)}}
+@keyframes enter{0%{opacity:0}6%{opacity:1}90%{opacity:1}94%{opacity:0}100%{opacity:0}}
+@keyframes pop{from{opacity:0}to{opacity:1}}
 @keyframes cursor{50%{opacity:0}}
-.type{animation:type 1.1s steps(34,end) both}
-.output{animation:enter .5s both}
+.type{animation:type 18s linear infinite}
+.output{animation:enter 18s linear infinite}
+.pop{animation:pop .5s both}
 .cursor{animation:cursor 1s step-end infinite}
-@media(prefers-reduced-motion:reduce){.type,.output,.cursor{animation:none}}
+@media(prefers-reduced-motion:reduce){.type,.output,.pop,.cursor{animation:none}.type{clip-path:inset(0 0 0 0)}.output,.pop{opacity:1}}
 </style>'''
 
 
@@ -170,7 +172,7 @@ def activity(data):
         attributes = ' '.join(f'data-{key}="{c[key]}"' for key in ('date', 'count', 'open', 'high', 'low', 'close'))
         body = (f'<g {attributes}><title>{c["date"]}: {c["count"]} contributions; rolling 7D O {c["open"]}, '
                 f'H {c["high"]}, L {c["low"]}, C {c["close"]}</title>' + body + '</g>')
-        b += reveal(body, i * .025)
+        b += reveal(body, i * .025, 'pop')
     for i in (0, 30, 60, 89):
         b += T(32 + i * 9.2 - (45 if i == 89 else 0), 450, str(series[i]['date']), 10, fill='#969696')
     b += R(32, 472, 896, 1, '#393939')
