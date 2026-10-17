@@ -12,6 +12,7 @@ name: Update terminal session
     paths:
       - 'scripts/render_session.py'
       - 'scripts/fetch_contributions.py'
+      - 'scripts/fetch_languages.py'
       - '.github/workflows/update-profile-art.yml'
 
 permissions:
@@ -35,13 +36,18 @@ jobs:
           python-version: '3.11'
       - name: Fetch public contribution calendar
         run: python scripts/fetch_contributions.py
+      - name: Aggregate public repo languages
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/fetch_languages.py
       - name: Render current session
         run: python scripts/render_session.py
       - name: Commit refreshed activity
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/contributions.json assets/session README.md
+          git add data assets/session README.md
           if git diff --cached --quiet; then
             exit 0
           fi

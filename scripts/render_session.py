@@ -83,11 +83,13 @@ STYLE = '''<style>
 @keyframes enter{0%{opacity:0}6%{opacity:1}90%{opacity:1}94%{opacity:0}100%{opacity:0}}
 @keyframes pop{from{opacity:0}to{opacity:1}}
 @keyframes cursor{50%{opacity:0}}
+@keyframes grow{0%{clip-path:inset(0 100% 0 0)}12%{clip-path:inset(0 100% 0 0)}44%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
 .type{animation:type 18s linear infinite}
 .output{animation:enter 18s linear infinite}
 .pop{animation:pop .5s both}
+.grow{animation:grow 18s linear infinite}
 .cursor{animation:cursor 1s step-end infinite}
-@media(prefers-reduced-motion:reduce){.type,.output,.pop,.cursor{animation:none}.type{clip-path:inset(0 0 0 0)}.output,.pop{opacity:1}}
+@media(prefers-reduced-motion:reduce){.type,.output,.pop,.grow,.cursor{animation:none}.type,.grow{clip-path:inset(0 0 0 0)}.output,.pop{opacity:1}}
 </style>'''
 
 
@@ -243,6 +245,29 @@ def activity(data):
                  'Filled bodies rise, hollow bodies fall, lines are flat. Volume is each day’s actual count.')
 
 
+def languages():
+    """A monochrome byte-share bar of the top languages across public repos."""
+    data = json.loads((ROOT / 'data/languages.json').read_text(encoding='utf-8'))
+    rows = data['languages']
+    bar_x, bar_w, y0, rh = 176, 592, 112, 44
+    b = T(32, 39, '~ $ git languages --top', 17)
+    b += T(32, 70, f'BYTE SHARE / {data["repos_counted"]} PUBLIC REPOS / FORKS EXCLUDED', 11, fill='#969696')
+    b += R(32, 86, 896, 1, '#393939')
+    for i, r in enumerate(rows):
+        y = y0 + i * rh
+        b += T(32, y + 5, r['name'], 14)
+        b += R(bar_x, y - 9, bar_w, 16, '#252525')
+        fill = max(3.0, bar_w * r['pct'] / 100)
+        b += (f'<rect class="grow" style="animation-delay:{0.3 + i * 0.18:.2f}s" '
+              f'x="{bar_x}" y="{y - 9}" width="{fill:.1f}" height="16" fill="#f0f0f0"/>')
+        b += T(bar_x + bar_w + 18, y + 5, f'{r["pct"]}%', 13)
+    height = y0 + len(rows) * rh + 16
+    summary = ', '.join(f'{r["name"]} {r["pct"]}%' for r in rows)
+    return shell(b, height, f'{USER} — language byte share across public repositories',
+                 f'Monochrome bars of the top languages by bytes across {data["repos_counted"]} '
+                 f'public, non-fork repositories: {summary}.')
+
+
 def picture(name, alt):
     return (f'<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/{name}.svg">'
             f'<img src="./assets/session/{name}-light.svg" width="960" alt="{escape(alt, quote=True)}"></picture>')
@@ -261,12 +286,15 @@ def readme():
             '<details>\n<summary><code>~ $ cat stack.json</code></summary>\n\n'
             '```json\n' + stack_json + '\n```\n\n'
             '</details>\n\n<br>\n\n'
+            + picture('languages', 'Monochrome bars of the top languages by byte share across public, '
+                      'non-fork repositories, refreshed daily.') + '\n\n'
             + picture('activity', 'Monochrome GitHub contribution candles: 90 daily candles based on rolling '
                       'seven-day totals, actual daily volumes, and totals over 365 and 90 observed days. '
                       'Filled candles rise; hollow candles fall.') + '\n\n'
             '<details>\n<summary><code>~ $ help</code></summary>\n\n'
             '`projects/` — click a repository row above.  \n'
             '`stack.json` — expand the toolbox.  \n'
+            '`languages` — real byte share across public repos, refreshed daily.  \n'
             '`activity.log` — real public contribution candles, refreshed daily.\n\n'
             '</details>\n')
 
@@ -275,6 +303,8 @@ def main():
     data = json.loads((ROOT / 'data/contributions.json').read_text(encoding='utf-8'))
     OUT.mkdir(parents=True, exist_ok=True)
     assets = {'boot': hero(), 'activity': activity(data)}
+    if (ROOT / 'data/languages.json').exists():
+        assets['languages'] = languages()
     assets.update((f'project-{p[2]}', project(*p)) for p in PROJECTS)
     for name, body in assets.items():
         (OUT / f'{name}.svg').write_text(body, encoding='utf-8')

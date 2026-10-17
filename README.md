@@ -45,6 +45,8 @@
 
 <br>
 
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/languages.svg"><img src="./assets/session/languages-light.svg" width="960" alt="Monochrome bars of the top languages by byte share across public, non-fork repositories, refreshed daily."></picture>
+
 <picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/activity.svg"><img src="./assets/session/activity-light.svg" width="960" alt="Monochrome GitHub contribution candles: 90 daily candles based on rolling seven-day totals, actual daily volumes, and totals over 365 and 90 observed days. Filled candles rise; hollow candles fall."></picture>
 
 <details>
@@ -52,6 +54,7 @@
 
 `projects/` — click a repository row above.  
 `stack.json` — expand the toolbox.  
+`languages` — real byte share across public repos, refreshed daily.  
 `activity.log` — real public contribution candles, refreshed daily.
 
 </details>
