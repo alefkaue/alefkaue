@@ -199,6 +199,10 @@ def readme():
     return ('<!-- ' + WORDMARK + ' / SESSION 001 -->\n\n'
             + picture('boot', f'{WORDMARK}. Animated monochrome terminal session. {WHOAMI[0][1]} — '
                       f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend.') + '\n\n'
+            # ghost.svg is a static, pre-rendered ASCII portrait (scripts/make_ghost.py);
+            # it is not regenerated here, only referenced so this README keeps it.
+            + picture('ghost', 'Animated ASCII portrait that emerges from the dark; its eyes '
+                      'ignite and watch over the session.') + '\n\n'
             + links + '\n\n'
             '<details>\n<summary><code>~ $ cat stack.json</code></summary>\n\n'
             '```json\n' + stack_json + '\n```\n\n'

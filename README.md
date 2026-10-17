@@ -2,6 +2,8 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/boot.svg"><img src="./assets/session/boot-light.svg" width="960" alt="ALEFKAUE. Animated monochrome terminal session. Alef Santos / alefkaue — Estudante de TI; Segurança da Informação &amp; Dev. Learn. Break. Defend."></picture>
 
+<picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/ghost.svg"><img src="./assets/session/ghost-light.svg" width="960" alt="Animated ASCII portrait that emerges from the dark; its eyes ignite and watch over the session."></picture>
+
 <a href="https://github.com/alefkaue/mini-soc-analyzer"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-01.svg"><img src="./assets/session/project-01-light.svg" width="960" alt="Open mini-soc-analyzer repository"></picture></a><br>
 <a href="https://github.com/alefkaue/pentest-ponto-cego"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-02.svg"><img src="./assets/session/project-02-light.svg" width="960" alt="Open pentest-ponto-cego repository"></picture></a><br>
 <a href="https://github.com/alefkaue/estagios"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/session/project-03.svg"><img src="./assets/session/project-03-light.svg" width="960" alt="Open estagios repository"></picture></a><br>
