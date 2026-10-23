@@ -1,21 +1,30 @@
 # Cybersecurity Portfolio
 
-Independent projects and labs organized by area. The three highlights were chosen for combining a working implementation, automated tests, a reproducible demo, and an honest account of their limits.
+Academic and personal projects organized by area. The highlights combine documented scope, reproducible examples and honest limits. New utilities were built with AI assistance; they are not claims of professional operations or production use.
 
 ## Highlights
 
 | Project | Skill demonstrated | Demo |
 | --- | --- | --- |
-| [SSH Watch](https://github.com/alefkaue/ssh-watch) | SOC: log parsing, time-based correlation, and evidence | Detect three SSH failures and the login that follows |
-| [Integrity Guard](https://github.com/alefkaue/integrity-guard) | Blue Team: SHA-256, baselines, and change detection | Build an inventory and flag a modified file |
-| [IAM Policy Lens](https://github.com/alefkaue/iam-policy-lens) | Cloud Security: permission review and recommendations | Compare a broad policy with a scoped one |
+| [SIMOC Integrador / CYMAG](https://github.com/alefkaue/simoc-integrador) | Academic team project: authorized lab, Python automation and Groq/Llama integration | Read the academic scope and technical/executive reporting work |
+| [Cyber CTF Write-ups](https://github.com/alefkaue/cyber-ctf-writeups) | Completed RSA case and partial forensic investigation; 3rd place overall reported by the participant | Run the sanitized offline Python demonstrations |
+| [PHP2Shell Security Assessor](https://github.com/alefkaue/php2shell-security-assessor) | Evidence-aware version, vendor-backport and lifecycle triage in Python | Compare a synthetic affected version, vendor package and unconfirmed banner |
+| [JAR Surface Auditor](https://github.com/alefkaue/jar-surface-auditor) | Java: bounded archive metadata, safe-path review and class-runtime compatibility | Inspect an owned JAR without executing or extracting it |
+| [Service Posture Auditor](https://github.com/alefkaue/service-posture-auditor) | C#: Windows service command lines and explicit ACL evidence | Compare a quoted path, ambiguous candidate and unresolved environment path |
+| [PCAP DNS Guard](https://github.com/alefkaue/pcap-dns-guard) | C++20: bounded binary parsing, packet offsets and malformed-input tests | Inspect a generated synthetic PCAP offline |
 
-All three are pure Python with no external dependencies, include synthetic examples, and run tests on GitHub Actions across Linux and Windows. Each README explains how to reproduce the result and what the tool cannot conclude.
+Each README explains how to reproduce the result and what the project cannot conclude. Personal utilities include synthetic fixtures and automated tests. SIMOC remains an academic team project with its own historical scope, not an interchangeable personal utility.
 
 ## Supporting tools
 
 | Area | Project | Scope |
 | --- | --- | --- |
+| AppSec / C# | [Dotnet Config Auditor](https://github.com/alefkaue/dotnet-config-auditor) | Review one configuration layer without exporting sensitive values |
+| Binary analysis / C++ | [PE Hardening Lens](https://github.com/alefkaue/pe-hardening-lens) | Parse PE metadata and declared protection flags without execution |
+| DNS / evidence | [DNS Trace Investigator](https://github.com/alefkaue/dns-trace-investigator) | Offline DNS patterns, DHCP timing and evidence provenance |
+| SOC / Python | [SSH Watch](https://github.com/alefkaue/ssh-watch) | Failure bursts and subsequent login correlation |
+| Integrity / Python | [Integrity Guard](https://github.com/alefkaue/integrity-guard) | Baselines and file-change evidence |
+| Cloud / Python | [IAM Policy Lens](https://github.com/alefkaue/iam-policy-lens) | Offline policy review and scope reasoning |
 | Java / artifact integrity | [Artifact Hash Guard](https://github.com/alefkaue/artifact-hash-guard) | Offline SHA-256 manifest verification, safe-path checks and file integrity reports |
 | C# / authentication triage | [Auth Event Lens](https://github.com/alefkaue/auth-event-lens) | Normalized authentication events, multi-account failure patterns and success correlation |
 | Network security / inventory | [Nmap Surface Diff](https://github.com/alefkaue/nmap-surface-diff) | Offline diff of Nmap XML — observed endpoints and scope changes |

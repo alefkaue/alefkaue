@@ -19,11 +19,20 @@ OUT = ROOT / 'assets/session'
 USER = os.environ.get('GH_PROFILE_USER', 'alefkaue')
 
 # (display label, repository name, number)
-PROJECTS = [('SSH Watch / SOC detection', 'ssh-watch', '01'),
-            ('Integrity Guard / file monitoring', 'integrity-guard', '02'),
-            ('IAM Policy Lens / cloud review', 'iam-policy-lens', '03')]
+PROJECTS = [('SIMOC / academic security', 'simoc-integrador', '01'),
+            ('CTF / third place overall', 'cyber-ctf-writeups', '02'),
+            ('PHP / evidence-aware assessment', 'php2shell-security-assessor', '03'),
+            ('Java / archive review', 'jar-surface-auditor', '04'),
+            ('C# / service posture', 'service-posture-auditor', '05'),
+            ('C++ / safe packet parsing', 'pcap-dns-guard', '06')]
 
 PROJECT_SUMMARIES = {
+    'simoc-integrador': 'ACADEMIC / authorized lab, Python automation and Groq/Llama integration',
+    'cyber-ctf-writeups': 'CTF / 3rd place reported / completed RSA case + partial forensics',
+    'php2shell-security-assessor': 'PYTHON / offline PHP version evidence, backports and reports',
+    'jar-surface-auditor': 'JAVA / archive paths, class metadata and evidence / no execution',
+    'service-posture-auditor': 'C# / Windows service snapshots, path ambiguity and ACL evidence',
+    'pcap-dns-guard': 'C++20 / bounded PCAP and DNS parsing / offline synthetic fixtures',
     'ssh-watch': 'SOC / SSH failure bursts and login correlation / tested CLI',
     'integrity-guard': 'BLUE TEAM / SHA-256 baselines and file change detection',
     'iam-policy-lens': 'CLOUD SECURITY / offline IAM policy review and evidence',
@@ -185,7 +194,7 @@ def hero():
 
 def projects_header():
     b = T(32, 39, '~ $ ls ~/projects', 17)
-    b += T(32, 70, '# FEATURED · DETECTION / INTEGRITY / CLOUD SECURITY', 11, fill='#969696')
+    b += T(32, 70, '# FEATURED / ACADEMIC WORK + TESTED TOOLS IN PYTHON, JAVA, C# AND C++', 11, fill='#969696')
     b += R(32, 86, 896, 1, '#393939')
     return shell(b, 100, 'Featured projects', 'Featured security projects: detection, integrity and cloud security.', False)
 
@@ -272,21 +281,21 @@ def languages():
     data = json.loads((ROOT / 'data/languages.json').read_text(encoding='utf-8'))
     rows = data['languages']
     bar_x, bar_w, y0, rh = 176, 592, 112, 44
-    b = T(32, 39, '~ $ git languages --top', 17)
-    b += T(32, 70, f'BYTE SHARE / {data["repos_counted"]} PUBLIC REPOS / FORKS EXCLUDED', 11, fill='#969696')
+    b = T(32, 39, '~ $ git languages --focus', 17)
+    b += T(32, 70, f'REAL BYTE SHARE / {data["repos_counted"]} PUBLIC REPOS / SELECTED LANGUAGES + OTHER', 11, fill='#969696')
     b += R(32, 86, 896, 1, '#393939')
     for i, r in enumerate(rows):
         y = y0 + i * rh
         b += T(32, y + 5, r['name'], 14)
         b += R(bar_x, y - 9, bar_w, 16, '#252525')
-        fill = max(3.0, bar_w * r['pct'] / 100)
+        fill = bar_w * r['bytes'] / data['total_bytes']
         b += (f'<rect class="grow" style="animation-delay:{0.3 + i * 0.18:.2f}s" '
               f'x="{bar_x}" y="{y - 9}" width="{fill:.1f}" height="16" fill="#f0f0f0"/>')
         b += T(bar_x + bar_w + 18, y + 5, f'{r["pct"]}%', 13)
     height = y0 + len(rows) * rh + 16
     summary = ', '.join(f'{r["name"]} {r["pct"]}%' for r in rows)
     return shell(b, height, f'{USER} — language byte share across public repositories',
-                 f'Monochrome bars of the top languages by bytes across {data["repos_counted"]} '
+                 f'Monochrome bars of selected languages by actual bytes across {data["repos_counted"]} '
                  f'public, non-fork repositories: {summary}.')
 
 
@@ -321,14 +330,14 @@ def readme():
             + picture('boot', f'{WORDMARK}. Animated monochrome terminal session. {WHOAMI[0][1]} — '
                       f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend. An ASCII portrait '
                       'rises on the right and its eyes ignite.') + '\n\n'
-            + picture('projects-head', 'Featured security projects: detection, integrity and cloud security.') + '\n\n'
+            + picture('projects-head', 'Featured: SIMOC, CTF, PHP, Java, C# and C++ projects.') + '\n\n'
             + links + '\n\n'
             + '<a href="./PORTFOLIO.md">'
             + picture('projects-more', 'Open the full cybersecurity portfolio catalog and demos.')
             + '</a>\n\n'
             + picture('stack', 'Security toolkit and skills across security, tooling, languages, '
                       'frameworks, dev and learning — the skills a byte-share bar cannot show.') + '\n\n'
-            + picture('languages', 'Monochrome bars of the top languages by byte share across public, '
+            + picture('languages', 'Monochrome bars of selected languages by actual byte share across public, '
                       'non-fork repositories, refreshed daily.') + '\n\n'
             + picture('activity', 'Monochrome GitHub contribution candles: 90 daily candles based on rolling '
                       'seven-day totals, actual daily volumes, and totals over 365 and 90 observed days. '
@@ -338,7 +347,7 @@ def readme():
             '`./stack` — security toolkit and skills.  \n'
             '`languages` — real byte share across public repos, refreshed daily.  \n'
             '`activity.log` — real public contribution candles, refreshed daily.\n\n'
-            '</details>\n')
+            '</details>\n\n' + (ROOT / 'data/profile-note.md').read_text(encoding='utf-8'))
 
 
 def main():

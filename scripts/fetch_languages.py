@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 USERNAME = os.environ.get('GH_PROFILE_USER', 'alefkaue')
 TOKEN = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN')
 OUT_PATH = ROOT / 'data/languages.json'
-TOP_N = 6
+FOCUS = ('Python', 'TypeScript', 'JavaScript', 'Java', 'C#', 'C++')
 
 
 def api(url):
@@ -71,9 +71,10 @@ def build(totals, counted):
     if grand <= 0:
         raise ValueError('no language bytes found')
     ordered = sorted(totals.items(), key=lambda kv: kv[1], reverse=True)
-    top = ordered[:TOP_N]
+    # Editorial selection affects labels only, never the byte counts or denominator.
+    top = [(name, count) for name, count in ordered if name in FOCUS]
     rows = [{'name': n, 'bytes': b, 'pct': round(100 * b / grand, 1)} for n, b in top]
-    other = sum(b for _, b in ordered[TOP_N:])
+    other = sum(b for name, b in ordered if name not in FOCUS)
     if other > 0:
         rows.append({'name': 'Other', 'bytes': other, 'pct': round(100 * other / grand, 1)})
     return {
@@ -81,6 +82,8 @@ def build(totals, counted):
         'generated_at': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         'repos_counted': counted,
         'total_bytes': grand,
+        'selection': 'Selected languages; remaining languages are grouped as Other. Not a proficiency score.',
+        'all_languages': dict(ordered),
         'languages': rows,
     }
 
