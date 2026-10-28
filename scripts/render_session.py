@@ -19,14 +19,15 @@ OUT = ROOT / 'assets/session'
 USER = os.environ.get('GH_PROFILE_USER', 'alefkaue')
 
 # (display label, repository name, number)
-PROJECTS = [('SIMOC / academic security', 'simoc-integrador', '01'),
-            ('CTF / third place overall', 'cyber-ctf-writeups', '02'),
-            ('PHP / evidence-aware assessment', 'php2shell-security-assessor', '03'),
-            ('Java / archive review', 'jar-surface-auditor', '04'),
-            ('C# / service posture', 'service-posture-auditor', '05'),
-            ('C++ / safe packet parsing', 'pcap-dns-guard', '06')]
+PROJECTS = [('NEXO Store / front-end', 'nexo-store', '01'),
+            ('JAR Surface / Java', 'jar-surface-auditor', '02'),
+            ('SIMOC / academic security', 'simoc-integrador', '03'),
+            ('CTF / third place overall', 'cyber-ctf-writeups', '04'),
+            ('IAM Policy / AWS', 'iam-policy-lens', '05'),
+            ('Service Posture / C#', 'service-posture-auditor', '06')]
 
 PROJECT_SUMMARIES = {
+    'nexo-store': 'REACT / TypeScript storefront, REST catalog and simulated checkout',
     'simoc-integrador': 'ACADEMIC / authorized lab, Python automation and Groq/Llama integration',
     'cyber-ctf-writeups': 'CTF / 3rd place reported / completed RSA case + partial forensics',
     'php2shell-security-assessor': 'PYTHON / offline PHP version evidence, backports and reports',
@@ -323,31 +324,8 @@ def picture(name, alt):
 
 
 def readme():
-    links = '\n'.join(f'<a href="https://github.com/{USER}/{repo}">'
-                      + picture('project-' + number, 'Open ' + label + ' repository') + '</a><br>'
-                      for label, repo, number in PROJECTS)
-    return ('<!-- ' + WORDMARK + ' / SESSION 001 -->\n\n'
-            + picture('boot', f'{WORDMARK}. Animated monochrome terminal session. {WHOAMI[0][1]} — '
-                      f'{WHOAMI[1][1]}; {WHOAMI[2][1]}. Learn. Break. Defend. An ASCII portrait '
-                      'rises on the right and its eyes ignite.') + '\n\n'
-            + picture('projects-head', 'Featured: SIMOC, CTF, PHP, Java, C# and C++ projects.') + '\n\n'
-            + links + '\n\n'
-            + '<a href="./PORTFOLIO.md">'
-            + picture('projects-more', 'Open the full cybersecurity portfolio catalog and demos.')
-            + '</a>\n\n'
-            + picture('stack', 'Security toolkit and skills across security, tooling, languages, '
-                      'frameworks, dev and learning — the skills a byte-share bar cannot show.') + '\n\n'
-            + picture('languages', 'Monochrome bars of selected languages by actual byte share across public, '
-                      'non-fork repositories, refreshed daily.') + '\n\n'
-            + picture('activity', 'Monochrome GitHub contribution candles: 90 daily candles based on rolling '
-                      'seven-day totals, actual daily volumes, and totals over 365 and 90 observed days. '
-                      'Filled candles rise; hollow candles fall.') + '\n\n'
-            '<details>\n<summary><code>~ $ help</code></summary>\n\n'
-            '`projects/` — click a repository row above.  \n'
-            '`./stack` — security toolkit and skills.  \n'
-            '`languages` — real byte share across public repos, refreshed daily.  \n'
-            '`activity.log` — real public contribution candles, refreshed daily.\n\n'
-            '</details>\n\n' + (ROOT / 'data/profile-note.md').read_text(encoding='utf-8'))
+    """Keep the editorial profile independent of daily generated artwork."""
+    return (ROOT / 'data/profile.md').read_text(encoding='utf-8')
 
 
 def main():
