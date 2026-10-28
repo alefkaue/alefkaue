@@ -14,7 +14,6 @@ name: Update terminal session
       - 'scripts/fetch_contributions.py'
       - 'scripts/fetch_languages.py'
       - 'data/profile-note.md'
-      - 'data/profile.md'
       - 'tests/test_profile.py'
       - '.github/workflows/update-profile-art.yml'
 
@@ -37,7 +36,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Test language totals and editorial profile persistence
+      - name: Test language totals and persistent profile context
         run: python -m unittest discover -s tests -v
       - name: Fetch public contribution calendar
         run: python scripts/fetch_contributions.py

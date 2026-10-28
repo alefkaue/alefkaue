@@ -1,17 +1,16 @@
 {
   "username": "alefkaue",
-  "generated_at": "2026-10-28T17:29:22Z",
-  "repos_counted": 36,
-  "total_bytes": 3683053,
+  "generated_at": "2026-10-28T12:53:08Z",
+  "repos_counted": 35,
+  "total_bytes": 3507536,
   "selection": "Selected languages; remaining languages are grouped as Other. Not a proficiency score.",
   "all_languages": {
-    "TypeScript": 1546434,
-    "Python": 1442051,
-    "JavaScript": 214978,
-    "HTML": 158979,
+    "Python": 1443000,
+    "TypeScript": 1426925,
+    "JavaScript": 207043,
+    "HTML": 156946,
     "CSS": 87492,
     "Bicep": 47828,
-    "SCSS": 46989,
     "Java": 33793,
     "C#": 31548,
     "C++": 24764,
@@ -25,24 +24,24 @@
   },
   "languages": [
     {
-      "name": "TypeScript",
-      "bytes": 1546434,
-      "pct": 42.0
+      "name": "Python",
+      "bytes": 1443000,
+      "pct": 41.1
     },
     {
-      "name": "Python",
-      "bytes": 1442051,
-      "pct": 39.2
+      "name": "TypeScript",
+      "bytes": 1426925,
+      "pct": 40.7
     },
     {
       "name": "JavaScript",
-      "bytes": 214978,
-      "pct": 5.8
+      "bytes": 207043,
+      "pct": 5.9
     },
     {
       "name": "Java",
       "bytes": 33793,
-      "pct": 0.9
+      "pct": 1.0
     },
     {
       "name": "C#",
@@ -56,8 +55,8 @@
     },
     {
       "name": "Other",
-      "bytes": 389485,
-      "pct": 10.6
+      "bytes": 340463,
+      "pct": 9.7
     }
   ]
 }
